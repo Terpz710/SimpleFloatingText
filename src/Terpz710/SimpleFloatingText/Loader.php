@@ -28,14 +28,12 @@ class Loader extends PluginBase implements Listener {
 
     public function onEnable(): void {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-
         $config = new Config($this->getDataFolder() . "floating_text.json", Config::JSON);
-
-        $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand($this, $ftFolderPath));
+        $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand($this));
     }
 
     public function onDisable(): void {
-        FloatingKDRAPI::saveFile();
+        FloatingTextAPI::saveFile();
     }
 
     public static function getInstance(): ?Main {
@@ -44,15 +42,15 @@ class Loader extends PluginBase implements Listener {
 
     public function onChunkLoad(ChunkLoadEvent $event): void {
         $filePath = $this->getDataFolder() . "floating_text_data.json";
-        FloatingKDRAPI::loadFromFile($filePath);
+        FloatingTextAPI::loadFromFile($filePath);
     }
 
     public function onChunkUnload(ChunkUnloadEvent $event): void {
-        FloatingKDRAPI::saveFile();
+        FloatingTextAPI::saveFile();
     }
 
     public function onWorldUnload(WorldUnloadEvent $event): void {
-        FloatingKDRAPI::saveFile();
+        FloatingTextAPI::saveFile();
     }
 
     public function onEntityTeleport(EntityTeleportEvent $event): void {
@@ -62,9 +60,9 @@ class Loader extends PluginBase implements Listener {
             $toWorld = $event->getTo()->getWorld();
         
             if ($fromWorld !== $toWorld) {
-                foreach (FloatingKDRAPI::$floatingText as $tag => [$position, $floatingText]) {
+                foreach (FloatingTextAPI::$floatingText as $tag => [$position, $floatingText]) {
                     if ($position->getWorld() === $fromWorld) {
-                        FloatingKDRAPI::makeInvisible($tag);
+                        FloatingTextAPI::makeInvisible($tag);
                     }
                 }
             }
