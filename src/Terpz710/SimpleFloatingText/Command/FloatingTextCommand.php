@@ -17,13 +17,11 @@ use Terpz710\SimpleFloatingText\Loader;
 class FloatingTextCommand extends Command implements PluginOwned {
 
     private Loader $plugin;
-    private string $ftFolderPath;
 
-    public function __construct(Loader $plugin, string $ftFolderPath) {
+    public function __construct(Loader $plugin) {
         parent::__construct("ft", "§r§eManage Floating Texts", null, ["floatingtext"]);
         $this->setPermission("simplefloatingtext.cmd");
-        $this->plugin = $plugin;
-        $this->ftFolderPath = $ftFolderPath;
+        $this->plugin = $plugin
     }
 
     public function getOwningPlugin(): Plugin {
@@ -47,7 +45,7 @@ class FloatingTextCommand extends Command implements PluginOwned {
                             $position = $sender->getPosition();
                             $text = implode(" ", array_slice($args, 2));
                             $text = str_replace("\n", "{line}", $text);
-                            FloatingTextAPI::create($position, $tag, $text, $this->ftFolderPath);
+                            FloatingTextAPI::create($position, $tag, $text);
                             $sender->sendMessage("§l§f(§a!§f)§r§f Floating text created with the tag §e{$tag}§f and text: {$text}");
                         } else {
                             $sender->sendMessage("Usage: §e/ft create <tag> <text>");
@@ -58,7 +56,7 @@ class FloatingTextCommand extends Command implements PluginOwned {
                         if (isset($args[1])) {
                             $tag = $args[1];
                             if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
-                                FloatingTextAPI::remove($tag, $this->ftFolderPath);
+                                FloatingTextAPI::remove($tag);
                                 $sender->sendMessage("§l§f(§e!§f)§r§f Floating text with the tag §e{$tag}§f was removed!");
                             } else {
                                 $sender->sendMessage("§l§f(§c!§f)§r§f No floating text found with the tag §e{$tag}§f!");
@@ -96,7 +94,7 @@ class FloatingTextCommand extends Command implements PluginOwned {
                                 FloatingTextAPI::$floatingText[$tag][0]->x = $x;
                                 FloatingTextAPI::$floatingText[$tag][0]->y = $y;
                                 FloatingTextAPI::$floatingText[$tag][0]->z = $z;
-                                FloatingTextAPI::update($tag, FloatingTextAPI::$floatingText[$tag][1]->getText(), $this->ftFolderPath);
+                                FloatingTextAPI::update($tag, FloatingTextAPI::$floatingText[$tag][1]->getText());
 
                                 $sender->sendMessage("§l§f(§b!§f)§r§f Floating text with the tag §e{$tag}§f has been moved to your current location!");
                             } else {
