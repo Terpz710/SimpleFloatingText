@@ -21,7 +21,7 @@ class FloatingTextCommand extends Command implements PluginOwned {
     public function __construct(Loader $plugin) {
         parent::__construct("ft", "§r§eManage Floating Texts", null, ["floatingtext"]);
         $this->setPermission("simplefloatingtext.cmd");
-        $this->plugin = $plugin
+        $this->plugin = $plugin;
     }
 
     public function getOwningPlugin(): Plugin {
