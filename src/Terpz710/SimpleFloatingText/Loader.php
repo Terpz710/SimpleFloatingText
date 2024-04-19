@@ -6,7 +6,6 @@ namespace Terpz710\SimpleFloatingText;
 
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
-use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
