@@ -28,7 +28,7 @@ class FloatingTextAPI {
 
                 self::$floatingText[$tag] = [$position, $floatingText];
                 $world->addParticle($position, $floatingText, $world->getPlayers());
-                self::saveToFile(Main::getInstance()->getDataFolder());
+                self::saveToFile(Loader::getInstance()->getDataFolder());
             } else {
                 Server::getInstance()->getLogger()->warning("Chunk not loaded for floating text with tag '$tag'.");
             }
@@ -44,7 +44,7 @@ class FloatingTextAPI {
         self::$floatingText[$tag][1] = $floatingText;
         self::$floatingText[$tag][0]->getWorld()->addParticle(self::$floatingText[$tag][0], $floatingText, self::$floatingText[$tag][0]->getWorld()->getPlayers());
         unset(self::$floatingText[$tag]);
-        self::saveToFile(Main::getInstance()->getDataFolder());
+        self::saveToFile(Loader::getInstance()->getDataFolder());
     }
 
     public static function update(string $tag, string $text): void {
@@ -55,7 +55,7 @@ class FloatingTextAPI {
         $floatingText->setText(str_replace("{line}", "\n", $text));
         self::$floatingText[$tag][1] = $floatingText;
         self::$floatingText[$tag][0]->getWorld()->addParticle(self::$floatingText[$tag][0], $floatingText, self::$floatingText[$tag][0]->getWorld()->getPlayers());
-        self::saveToFile(Main::getInstance()->getDataFolder());
+        self::saveToFile(Loader::getInstance()->getDataFolder());
     }
 
     public static function makeInvisible(string $tag): void {
