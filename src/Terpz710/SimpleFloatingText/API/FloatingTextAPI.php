@@ -4,26 +4,38 @@ declare(strict_types=1);
 
 namespace Terpz710\SimpleFloatingText\API;
 
+use pocketmine\Server;
 use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\world\Position;
-use pocketmine\world\WorldManager;
-use pocketmine\world\World;
-use pocketmine\Server;
+use pocketmine\utils\Config;
+
+use Terpz710\SimpleFloatingText\Loader;
 
 class FloatingTextAPI {
     public static array $floatingText = [];
 
-    public static function create(Position $position, string $tag, string $text, string $ftFolderPath): void {
-        $floatingText = new FloatingTextParticle(str_replace("{line}", "\n", $text));
-        if (array_key_exists($tag, self::$floatingText)) {
-            self::remove($tag, $ftFolderPath);
+    public static function create(Position $position, string $tag, string $text): void {
+        $world = $position->getWorld();
+
+        if ($world !== null) {
+            $chunk = $world->getOrLoadChunkAtPosition($position);
+            if ($chunk !== null) {
+                $floatingText = new FloatingTextParticle(str_replace("{line}", "\n", $text));
+
+                if (array_key_exists($tag, self::$floatingText)) {
+                    self::remove($tag);
+                }
+
+                self::$floatingText[$tag] = [$position, $floatingText];
+                $world->addParticle($position, $floatingText, $world->getPlayers());
+                self::saveToFile(Main::getInstance()->getDataFolder());
+            } else {
+                Server::getInstance()->getLogger()->warning("Chunk not loaded for floating text with tag '$tag'.");
+            }
         }
-        self::$floatingText[$tag] = [$position, $floatingText];
-        $position->getWorld()->addParticle($position, $floatingText, $position->getWorld()->getPlayers());
-        self::saveToFile($ftFolderPath);
     }
 
-    public static function remove(string $tag, string $ftFolderPath): void {
+    public static function remove(string $tag): void {
         if (!array_key_exists($tag, self::$floatingText)) {
             return;
         }
@@ -32,10 +44,10 @@ class FloatingTextAPI {
         self::$floatingText[$tag][1] = $floatingText;
         self::$floatingText[$tag][0]->getWorld()->addParticle(self::$floatingText[$tag][0], $floatingText, self::$floatingText[$tag][0]->getWorld()->getPlayers());
         unset(self::$floatingText[$tag]);
-        self::saveToFile($ftFolderPath);
+        self::saveToFile(Main::getInstance()->getDataFolder());
     }
 
-    public static function update(string $tag, string $text, string $ftFolderPath): void {
+    public static function update(string $tag, string $text): void {
         if (!array_key_exists($tag, self::$floatingText)) {
             return;
         }
@@ -43,7 +55,7 @@ class FloatingTextAPI {
         $floatingText->setText(str_replace("{line}", "\n", $text));
         self::$floatingText[$tag][1] = $floatingText;
         self::$floatingText[$tag][0]->getWorld()->addParticle(self::$floatingText[$tag][0], $floatingText, self::$floatingText[$tag][0]->getWorld()->getPlayers());
-        self::saveToFile($ftFolderPath);
+        self::saveToFile(Main::getInstance()->getDataFolder());
     }
 
     public static function makeInvisible(string $tag): void {
@@ -55,19 +67,28 @@ class FloatingTextAPI {
         }
     }
 
-    public static function loadFromFile(string $filePath, string $ftFolderPath): void {
+    public static function loadFromFile(string $filePath): void {
         if (file_exists($filePath)) {
             $data = json_decode(file_get_contents($filePath), true);
 
             foreach ($data as $tag => $textData) {
-                $position = new Position($textData["x"], $textData["y"], $textData["z"], Server::getInstance()->getWorldManager()->getWorldByName($textData["world"]));
-                self::create($position, $tag, $textData["text"], $ftFolderPath);
+                $world = Server::getInstance()->getWorldManager()->getWorldByName($textData["world"]);
+                if ($world !== null) {
+                    $position = new Position($textData["x"], $textData["y"], $textData["z"], $world);
+                    $chunk = $world->getOrLoadChunkAtPosition($position);
+                    if ($chunk !== null) {
+                        self::create($position, $tag, $textData["text"]);
+                    } else {
+                        Server::getInstance()->getLogger()->warning("Chunk not loaded for floating text with tag '$tag'.");
+                    }
+                }
             }
         }
     }
 
-    public static function saveToFile(string $ftFolderPath): void {
-        $filePath = $ftFolderPath . DIRECTORY_SEPARATOR . "floating_text.json";
+    public static function saveToFile(string $dataPath): void {
+        $filePath = new Config($dataPath . "floating_text_data.json", Config::JSON);
+
         $data = [];
 
         foreach (self::$floatingText as $tag => [$position, $floatingText]) {
@@ -80,6 +101,11 @@ class FloatingTextAPI {
             ];
         }
 
-        file_put_contents($filePath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $filePath->setAll($data);
+        $filePath->save();
+    }
+
+    public static function saveFile(): string {
+        return json_encode(self::$floatingText, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 }
