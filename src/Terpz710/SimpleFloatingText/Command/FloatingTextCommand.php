@@ -72,7 +72,7 @@ class FloatingTextCommand extends Command implements PluginOwned {
                             $text = implode(" ", array_slice($args, 2));
                             $text = str_replace("\n", "{line}", $text);
                             if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
-                                FloatingTextAPI::update($tag, $text, $this->ftFolderPath);
+                                FloatingTextAPI::update($tag, $text);
                                 $sender->sendMessage("§l§f(§b!§f)§r§f Floating text with the tag §e{$tag}§f has updated the text to: {$text}");
                             } else {
                                 $sender->sendMessage("§l§f(§c!§f)§r§f No floating text found with the tag §e{$tag}§f!");
