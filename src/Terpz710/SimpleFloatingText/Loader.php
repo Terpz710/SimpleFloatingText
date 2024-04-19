@@ -9,7 +9,9 @@ use pocketmine\event\Listener;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\world\ChunkLoadEvent;
+use pocketmine\event\world\ChunkUnloadEvent;
 use pocketmine\event\world\WorldUnloadEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
@@ -36,7 +38,7 @@ class Loader extends PluginBase implements Listener {
         FloatingTextAPI::saveFile();
     }
 
-    public static function getInstance(): ?Main {
+    public static function getInstance(): ?Loader {
         return self::$instance;
     }
 
