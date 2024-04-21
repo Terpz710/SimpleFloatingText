@@ -18,6 +18,7 @@ A [Pocketmine-MP](https://pmmp.io) plugin that adds in customizable floating tex
 * No extra UI. Just pure commands!
 * You can use "{line}" to case-break your sentences.
 * You can create/edit/remove/move the floating text.
+  
   Got a suggestion? Dm me!
     * ace87.
     * ace873056.
