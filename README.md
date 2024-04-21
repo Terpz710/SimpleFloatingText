@@ -31,6 +31,7 @@ Command: /floatingtext
 alias: ft
 permission: simplefloatingtext.cmd
 default: OP(only the operator can use this command)
+```
 
 # Report a bug
 
