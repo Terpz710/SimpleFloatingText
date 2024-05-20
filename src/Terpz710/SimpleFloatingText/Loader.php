@@ -20,7 +20,7 @@ class Loader extends PluginBase {
     }
 
     public function onEnable(): void {
-        $this->getServer()->getPluginManager()->registerEvents(new WorldManagement(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new WorldManagement($this), $this);
         $config = new Config($this->getDataFolder() . "floating_text.json", Config::JSON);
         $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand($this));
     }
