@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Terpz710\SimpleFloatingText;
 
-use pocketmine\player\Player;
-use pocketmine\event\Listener;
-use pocketmine\event\entity\EntityTeleportEvent;
-use pocketmine\event\world\ChunkLoadEvent;
-use pocketmine\event\world\ChunkUnloadEvent;
-use pocketmine\event\world\WorldUnloadEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 use Terpz710\SimpleFloatingText\API\FloatingTextAPI;
 use Terpz710\SimpleFloatingText\Command\FloatingTextCommand;
+use Terpz710\SimpleFloatingText\Event\WorldManagement;
 
-class Loader extends PluginBase implements Listener {
+class Loader extends PluginBase {
 
     private static $instance;
 
@@ -24,9 +19,8 @@ class Loader extends PluginBase implements Listener {
         self::$instance = $this;
     }
 
-
     public function onEnable(): void {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getPluginManager()->registerEvents(new WorldManagement(), $this);
         $config = new Config($this->getDataFolder() . "floating_text.json", Config::JSON);
         $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand($this));
     }
@@ -37,34 +31,5 @@ class Loader extends PluginBase implements Listener {
 
     public static function getInstance(): ?Loader {
         return self::$instance;
-    }
-
-    public function onChunkLoad(ChunkLoadEvent $event): void {
-        $filePath = $this->getDataFolder() . "floating_text_data.json";
-        FloatingTextAPI::loadFromFile($filePath);
-    }
-
-    public function onChunkUnload(ChunkUnloadEvent $event): void {
-        FloatingTextAPI::saveFile();
-    }
-
-    public function onWorldUnload(WorldUnloadEvent $event): void {
-        FloatingTextAPI::saveFile();
-    }
-
-    public function onEntityTeleport(EntityTeleportEvent $event): void {
-        $entity = $event->getEntity();
-        if ($entity instanceof Player) {
-            $fromWorld = $event->getFrom()->getWorld();
-            $toWorld = $event->getTo()->getWorld();
-        
-            if ($fromWorld !== $toWorld) {
-                foreach (FloatingTextAPI::$floatingText as $tag => [$position, $floatingText]) {
-                    if ($position->getWorld() === $fromWorld) {
-                        FloatingTextAPI::makeInvisible($tag);
-                    }
-                }
-            }
-        }
     }
 }
