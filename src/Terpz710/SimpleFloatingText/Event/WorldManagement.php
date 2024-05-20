@@ -12,11 +12,18 @@ use pocketmine\event\world\ChunkUnloadEvent;
 use pocketmine\event\world\WorldUnloadEvent;
 
 use Terpz710\SimpleFloatingText\API\FloatingTextAPI;
+use Terpz710\SimpleFloatingText\Loader;
 
-class WorldManagement extends Listener {
+class WorldManagement implements Listener {
+
+    private $plugin;
+
+    public function __construct(Loader $plugin) {
+        $this->plugin = $plugin;
+    }
 
     public function onChunkLoad(ChunkLoadEvent $event): void {
-        $filePath = $this->getDataFolder() . "floating_text_data.json";
+        $filePath = $this->plugin->getDataFolder() . "floating_text_data.json";
         FloatingTextAPI::loadFromFile($filePath);
     }
 
