@@ -23,4 +23,12 @@ class FloatingTextCommand extends BaseCommand {
         $this->registerSubCommand(new EditSubCommand("edit", "Edit an existing floating text"));
         $this->registerSubCommand(new MoveSubCommand("move", "Move a floating text to your location"));
     }
+
+    public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
+        $sender->sendMessage("§l§eAvailable SubCommands:");
+        $sender->sendMessage("§e/ft create <tag> <text>§f - Create a new floating text");
+        $sender->sendMessage("§e/ft remove <tag>§f - Remove an existing floating text");
+        $sender->sendMessage("§e/ft edit <tag> <new-text>§f - Edit a floating text's text");
+        $sender->sendMessage("§e/ft move <tag>§f - Move a floating text to your location");
+    }
 }
