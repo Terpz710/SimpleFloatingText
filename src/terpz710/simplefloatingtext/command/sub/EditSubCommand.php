@@ -15,8 +15,8 @@ use CortexPE\Commando\args\RawStringArgument;
 class EditSubCommand extends BaseSubCommand {
 
     protected function prepare() : void{
-        $this->registerArgument(0, new TextArgument("tag"));
-        $this->registerArgument(1, new RawStringArgument("new-text"));
+        $this->registerArgument(0, new RawStringArgument("tag"));
+        $this->registerArgument(1, new TextArgument("new-text"));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
