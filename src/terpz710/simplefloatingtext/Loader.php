@@ -6,8 +6,6 @@ namespace terpz710\simplefloatingtext;
 
 use pocketmine\plugin\PluginBase;
 
-use pocketmine\utils\Config;
-
 use terpz710\simplefloatingtext\api\FloatingText;
 
 use terpz710\simplefloatingtext\command\FloatingTextCommand;
@@ -29,7 +27,7 @@ final class Loader extends PluginBase {
             PacketHooker::register($this);
         }
 
-        $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand($this));
+        $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand());
     }
 
     public function onDisable() : void{
