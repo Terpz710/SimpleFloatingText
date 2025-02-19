@@ -1,11 +1,9 @@
 name: SimpleFloatingText
-version: 1.0.1
+version: 1.0.2
 author: Terpz710
-api: 5.0.0
-main: Terpz710\SimpleFloatingText\Loader
-description: Adds customizable floating text to your server.
+api: 5.3.0
+main: terpz710\simplefloatingtext\Loader
 
 permissions:
   simplefloatingtext.cmd:
-    description: Allows the OP to create, edit and remove floating text.
     default: op
