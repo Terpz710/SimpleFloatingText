@@ -13,7 +13,7 @@ use pocketmine\utils\Config;
 
 use terpz710\simplefloatingtext\Loader;
 
-final class FloatingTextAPI {
+final class FloatingText {
     
     public static array $floatingText = [];
 
