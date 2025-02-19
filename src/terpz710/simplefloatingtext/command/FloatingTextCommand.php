@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace terpz710\simplefloatingtext\command;
 
+use pocketmine\command\CommandSender;
+
 use terpz710\simplefloatingtext\Loader;
 
 use terpz710\simplefloatingtext\command\sub\CreateSubCommand;
@@ -18,17 +20,17 @@ class FloatingTextCommand extends BaseCommand {
     protected function prepare() : void{
         $this->setPermission("simplefloatingtext.cmd");
         
-        $this->registerSubCommand(new CreateSubCommand("create", "Create a floating text"));
-        $this->registerSubCommand(new RemoveSubCommand("remove", "Remove a floating text"));
-        $this->registerSubCommand(new EditSubCommand("edit", "Edit an existing floating text"));
-        $this->registerSubCommand(new MoveSubCommand("move", "Move a floating text to your location"));
+        $this->registerSubCommand(new CreateSubCommand(Loader::getInstance(), "create", "Create a floating text"));
+        $this->registerSubCommand(new RemoveSubCommand(Loader::getInstance(), "remove", "Remove a floating text"));
+        $this->registerSubCommand(new EditSubCommand(Loader::getInstance(), "edit", "Edit an existing floating text"));
+        $this->registerSubCommand(new MoveSubCommand(Loader::getInstance(), "move", "Move a floating text to your location"));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
         $sender->sendMessage("§l§eAvailable SubCommands:");
-        $sender->sendMessage("§e/ft create <tag> <text>§f - Create a new floating text");
-        $sender->sendMessage("§e/ft remove <tag>§f - Remove an existing floating text");
-        $sender->sendMessage("§e/ft edit <tag> <new-text>§f - Edit a floating text's text");
-        $sender->sendMessage("§e/ft move <tag>§f - Move a floating text to your location");
+        $sender->sendMessage("/ft create <tag> <text> - Create a new floating text");
+        $sender->sendMessage("/ft remove <tag> - Remove an existing floating text");
+        $sender->sendMessage("/ft edit <tag> <new-text> - Edit a floating text's text");
+        $sender->sendMessage("/ft move <tag> - Move a floating text to your location");
     }
 }
