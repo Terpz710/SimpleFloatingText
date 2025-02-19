@@ -17,7 +17,7 @@ use terpz710\simplefloatingtext\api\FloatingText;
 class EventListener implements Listener {
 
     public function onChunkLoad(ChunkLoadEvent $event) : void{
-        $filePath = $this->plugin->getDataFolder() . "floating_text.json";
+        $filePath = Loader::getInstance()->getDataFolder() . "floating_text.json";
         
         FloatingText::loadFromFile($filePath);
     }
