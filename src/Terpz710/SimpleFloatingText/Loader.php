@@ -23,7 +23,7 @@ final class Loader extends PluginBase {
     }
 
     protected function onEnable() : void{
-        $this->getServer()->getPluginManager()->registerEvents(new WorldManagement($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($this);
