@@ -2,36 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Terpz710\SimpleFloatingText\Command;
+namespace terpz710\simplefloatingtext\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\player\Player;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\world\Position;
 
-use Terpz710\SimpleFloatingText\API\FloatingTextAPI;
-use Terpz710\SimpleFloatingText\Loader;
+use terpz710\simplefloatingtext\Loader;
+use terpz710\simplefloatingtext\api\FloatingTextAPI;
 
 class FloatingTextCommand extends Command implements PluginOwned {
 
-    private Loader $plugin;
-
-    public function __construct(Loader $plugin) {
-        parent::__construct("ft", "§r§eManage Floating Texts", null, ["floatingtext"]);
+    public function __construct() {
+        parent::__construct("ft", "Manage Floating Texts", ["floatingtext"]);
         $this->setPermission("simplefloatingtext.cmd");
-        $this->plugin = $plugin;
+        
+        $this->plugin = Loader::getInstance();
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$this->testPermission($sender)) {
             return false;
         }
+        
         if ($sender instanceof Player) {
             if (isset($args[0])) {
                 switch ($args[0]) {
@@ -116,5 +115,9 @@ class FloatingTextCommand extends Command implements PluginOwned {
             $sender->sendMessage("This command can only be used in-game!");
         }
         return true;
+    }
+
+    public function getOwningPlugin() : Plugin{
+        return $this->plugin;
     }
 }
