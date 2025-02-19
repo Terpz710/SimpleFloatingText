@@ -9,12 +9,12 @@ use pocketmine\command\CommandSender;
 use terpz710\simplefloatingtext\api\FloatingText;
 
 use CortexPE\Commando\BaseSubCommand;
-use CortexPE\Commando\args\TextArgument;
+use CortexPE\Commando\args\RawStringArgument;
 
 class RemoveSubCommand extends BaseSubCommand {
 
     protected function prepare() : void{
-        $this->registerArgument(0, new TextArgument("tag"));
+        $this->registerArgument(0, new RawStringArgument("tag"));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
