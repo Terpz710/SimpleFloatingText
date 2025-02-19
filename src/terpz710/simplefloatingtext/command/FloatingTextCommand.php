@@ -15,7 +15,7 @@ use pocketmine\plugin\PluginOwned;
 use pocketmine\world\Position;
 
 use terpz710\simplefloatingtext\Loader;
-use terpz710\simplefloatingtext\api\FloatingTextAPI;
+use terpz710\simplefloatingtext\api\FloatingText;
 
 class FloatingTextCommand extends Command implements PluginOwned {
 
@@ -37,14 +37,14 @@ class FloatingTextCommand extends Command implements PluginOwned {
                     case "create":
                         if (isset($args[1]) && isset($args[2])) {
                             $tag = (string) $args[1];
-                            if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
+                            if (array_key_exists($tag, FloatingText::$floatingText)) {
                                 $sender->sendMessage("§l§f(§c!§f)§r§f A floating text with the tag §e{$tag}§f already exists!");
                                 break;
                             }
                             $position = $sender->getPosition();
                             $text = implode(" ", array_slice($args, 2));
                             $text = str_replace("\n", "{line}", $text);
-                            FloatingTextAPI::create($position, $tag, $text);
+                            FloatingText::create($position, $tag, $text);
                             $sender->sendMessage("§l§f(§a!§f)§r§f Floating text created with the tag §e{$tag}§f and text: {$text}");
                         } else {
                             $sender->sendMessage("Usage: §e/ft create <tag> <text>");
@@ -54,8 +54,8 @@ class FloatingTextCommand extends Command implements PluginOwned {
                     case "remove":
                         if (isset($args[1])) {
                             $tag = $args[1];
-                            if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
-                                FloatingTextAPI::remove($tag);
+                            if (array_key_exists($tag, FloatingText::$floatingText)) {
+                                FloatingText::remove($tag);
                                 $sender->sendMessage("§l§f(§e!§f)§r§f Floating text with the tag §e{$tag}§f was removed!");
                             } else {
                                 $sender->sendMessage("§l§f(§c!§f)§r§f No floating text found with the tag §e{$tag}§f!");
@@ -70,8 +70,8 @@ class FloatingTextCommand extends Command implements PluginOwned {
                             $tag = $args[1];
                             $text = implode(" ", array_slice($args, 2));
                             $text = str_replace("\n", "{line}", $text);
-                            if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
-                                FloatingTextAPI::update($tag, $text);
+                            if (array_key_exists($tag, FloatingText::$floatingText)) {
+                                FloatingText::update($tag, $text);
                                 $sender->sendMessage("§l§f(§b!§f)§r§f Floating text with the tag §e{$tag}§f has updated the text to: {$text}");
                             } else {
                                 $sender->sendMessage("§l§f(§c!§f)§r§f No floating text found with the tag §e{$tag}§f!");
@@ -89,11 +89,11 @@ class FloatingTextCommand extends Command implements PluginOwned {
                             $y = $playerPosition->y;
                             $z = $playerPosition->z;
 
-                            if (array_key_exists($tag, FloatingTextAPI::$floatingText)) {
-                                FloatingTextAPI::$floatingText[$tag][0]->x = $x;
-                                FloatingTextAPI::$floatingText[$tag][0]->y = $y;
-                                FloatingTextAPI::$floatingText[$tag][0]->z = $z;
-                                FloatingTextAPI::update($tag, FloatingTextAPI::$floatingText[$tag][1]->getText());
+                            if (array_key_exists($tag, FloatingText::$floatingText)) {
+                                FloatingText::$floatingText[$tag][0]->x = $x;
+                                FloatingText::$floatingText[$tag][0]->y = $y;
+                                FloatingText::$floatingText[$tag][0]->z = $z;
+                                FloatingText::update($tag, FloatingText::$floatingText[$tag][1]->getText());
 
                                 $sender->sendMessage("§l§f(§b!§f)§r§f Floating text with the tag §e{$tag}§f has been moved to your current location!");
                             } else {
