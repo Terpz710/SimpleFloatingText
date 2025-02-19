@@ -90,7 +90,7 @@ final class FloatingText {
     }
 
     public static function saveToFile(string $dataPath) : void{
-        $filePath = new Config($dataPath . "floating_text_data.json", Config::JSON);
+        $filePath = new Config($dataPath . "floating_text.json");
 
         $data = [];
 
