@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Terpz710\SimpleFloatingText\API;
+namespace terpz710\simplefloatingtext\api;
 
 use pocketmine\Server;
-use pocketmine\world\particle\FloatingTextParticle;
+
 use pocketmine\world\Position;
+use pocketmine\world\particle\FloatingTextParticle;
+
 use pocketmine\utils\Config;
 
-use Terpz710\SimpleFloatingText\Loader;
+use terpz710\simplefloatingtext\Loader;
 
-class FloatingTextAPI {
+final class FloatingTextAPI {
+    
     public static array $floatingText = [];
 
-    public static function create(Position $position, string $tag, string $text): void {
+    public static function create(Position $position, string $tag, string $text) : void{
         $world = $position->getWorld();
 
         if ($world !== null) {
@@ -35,7 +38,7 @@ class FloatingTextAPI {
         }
     }
 
-    public static function remove(string $tag): void {
+    public static function remove(string $tag) : void{
         if (!array_key_exists($tag, self::$floatingText)) {
             return;
         }
@@ -47,7 +50,7 @@ class FloatingTextAPI {
         self::saveToFile(Loader::getInstance()->getDataFolder());
     }
 
-    public static function update(string $tag, string $text): void {
+    public static function update(string $tag, string $text) : void{
         if (!array_key_exists($tag, self::$floatingText)) {
             return;
         }
@@ -58,7 +61,7 @@ class FloatingTextAPI {
         self::saveToFile(Loader::getInstance()->getDataFolder());
     }
 
-    public static function makeInvisible(string $tag): void {
+    public static function makeInvisible(string $tag) : void{
         if (array_key_exists($tag, self::$floatingText)) {
             $floatingText = self::$floatingText[$tag][1];
             $floatingText->setInvisible();
@@ -67,7 +70,7 @@ class FloatingTextAPI {
         }
     }
 
-    public static function loadFromFile(string $filePath): void {
+    public static function loadFromFile(string $filePath) : void{
         if (file_exists($filePath)) {
             $data = json_decode(file_get_contents($filePath), true);
 
@@ -86,7 +89,7 @@ class FloatingTextAPI {
         }
     }
 
-    public static function saveToFile(string $dataPath): void {
+    public static function saveToFile(string $dataPath) : void{
         $filePath = new Config($dataPath . "floating_text_data.json", Config::JSON);
 
         $data = [];
@@ -105,7 +108,7 @@ class FloatingTextAPI {
         $filePath->save();
     }
 
-    public static function saveFile(): string {
+    public static function saveFile() : string{
         return json_encode(self::$floatingText, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 }
