@@ -27,7 +27,7 @@ final class Loader extends PluginBase {
             PacketHooker::register($this);
         }
 
-        $this->getServer()->getCommandMap()->register("ft", new FloatingTextCommand());
+        $this->getServer()->getCommandMap()->register("SimpleFloatingText", new FloatingTextCommand($this, "ft", "Manage Floating Texts", ["floatingtext"]));
     }
 
     public function onDisable() : void{
